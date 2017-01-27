@@ -4,13 +4,19 @@
 package metoffice
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"runtime"
+	"strings"
 
+	"github.com/ajg/form"
 	cleanhttp "github.com/hashicorp/go-cleanhttp"
+	"github.com/mitchellh/mapstructure"
 )
 
 // APIKeyEnvVar is the name of the environment variable where the Metoffice API
@@ -130,4 +136,70 @@ func (c *Client) Request(verb, p string, ro *RequestOptions) (*http.Response, er
 	}
 
 	return resp, nil
+}
+
+//RequestForm makes an HTTP request with the give interface being endcoded as
+// as form data.
+func (c *Client) RequestForm(verb, p string, i interface{}, ro *RequestOptions) (*http.Response, error) {
+	if ro == nil {
+		ro = new(RequestOptions)
+	}
+
+	if ro.Headers == nil {
+		ro.Headers = make(map[string]string)
+	}
+	ro.Headers["Content-Type"] = "application/x-www-form-urlencoded"
+
+	buf := new(bytes.Buffer)
+	if err := form.NewEncoder(buf).DelimitWith('|').Encode(i); err != nil {
+		return nil, err
+	}
+	body := buf.String()
+
+	ro.Body = strings.NewReader(body)
+	ro.BodyLength = int64(len(body))
+
+	return c.Request(verb, p, ro)
+}
+
+// checkResp wraps an HTTP request from the default client and verifies the
+// request was successful. A non-200 request returns an error formatted to
+// included any validation problems or otherwise.
+func checkResp(resp *http.Response, err error) (*http.Response, error) {
+	// If the err is already there, there was an error higher up the chain, so
+	// just return that.
+	if err != nil {
+		return resp, err
+	}
+
+	switch resp.StatusCode {
+	case 200, 201, 202, 204, 205, 206:
+		return resp, nil
+	default:
+		return resp, NewHTTPError(resp)
+	}
+}
+
+// decodeJSON is used to decode an HTTP response body into an interface as JSPN
+func decodeJSON(out interface{}, body io.ReadCloser) error {
+	defer body.Close()
+
+	var parsed interface{}
+	dec := json.NewDecoder(body)
+	if err := dec.Decode(&parsed); err != nil {
+		return err
+	}
+
+	decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
+		DecodeHook: mapstructure.ComposeDecodeHookFunc(
+			mapToHTTPHeaderHookFunc(),
+			stringToTimeHookFunc(),
+		),
+		WeaklyTypedInput: true,
+		Result:           out,
+	})
+	if err != nil {
+		return err
+	}
+	return decoder.Decode(parsed)
 }
