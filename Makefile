@@ -7,15 +7,14 @@ EXTERNAL_TOOLS=\
 default: test
 
 # test runs the test suite and vets the code.
-test: generate
+test: updatedeps generate
 	@echo "==> Running tests..."
-	@go get github.com/Masterminds/glide
 	@go list $(TEST) \
 		| grep -v "github.com/octete/${NAME}/vendor" \
 		| xargs -n1 go test -timeout=60s -parallel=10 ${TESTARGS}
 
 # testrace runs the race checker
-testrace: generate
+testrace: updatedeps generate
 	@echo "==> Running tests (race)..."
 	@go list $(TEST) \
 		| grep -v "github.com/octete/${NAME}/vendor" \
