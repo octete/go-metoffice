@@ -1,13 +1,15 @@
 TEST?=./...
 NAME?=$(shell basename "${CURDIR}")
 EXTERNAL_TOOLS=\
-	github.com/mitchellh/gox
+	github.com/mitchellh/gox\
+	github.com/Masterminds/glide
 
 default: test
 
 # test runs the test suite and vets the code.
 test: generate
 	@echo "==> Running tests..."
+	@go get github.com/Masterminds/glide
 	@go list $(TEST) \
 		| grep -v "github.com/octete/${NAME}/vendor" \
 		| xargs -n1 go test -timeout=60s -parallel=10 ${TESTARGS}
@@ -21,7 +23,7 @@ testrace: generate
 
 # updatedeps installs all the dependencies needed to run and build.
 updatedeps:
-	@sh -c "'${CURDIR}/scripts/deps.sh' '${NAME}'"
+	@sh -c "glide update"
 
 # generate runs `go generate` to build the dynamically generated source files.
 generate:
