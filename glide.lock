@@ -1,0 +1,10 @@
+hash: ae3a866c03de36d0e07d2ad778c5dfc3e4b881aeb257b3b536f368ec03e63bdd
+updated: 1970-01-01T01:00:00+01:00
+imports:
+- name: github.com/ajg/form
+  version: 523a5da1a92f01b01f840b61689c0340a0243532
+- name: github.com/hashicorp/go-cleanhttp
+  version: ad28ea4487f05916463e2423a55166280e8254b5
+- name: github.com/mitchellh/mapstructure
+  version: db1efb556f84b25a0a13a04aad883943538ad2e0
+devImports: []

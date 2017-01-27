@@ -1,0 +1,5 @@
+package: .
+import:
+- package: github.com/ajg/form
+- package: github.com/hashicorp/go-cleanhttp
+- package: github.com/mitchellh/mapstructure
