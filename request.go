@@ -38,6 +38,9 @@ func (c *Client) RawRequest(verb, p string, ro *RequestOptions) (*http.Request, 
 	for k, v := range ro.Params {
 		params.Add(k, v)
 	}
+	// Add the API key, as we always have to pass it as a query parameter.
+	params.Add("key", c.apiKey)
+
 	u.RawQuery = params.Encode()
 
 	// Create the request Object.
@@ -45,12 +48,6 @@ func (c *Client) RawRequest(verb, p string, ro *RequestOptions) (*http.Request, 
 	if err != nil {
 		return nil, err
 	}
-
-	// Set the API key
-	//if len(c.apiKey) > 0 {
-	//	// TODO This needs to change
-	//	request.Header.Set(APIKeyHeader, c.apiKey)
-	//}
 
 	// Set the User-Agent
 	request.Header.Set("User-Agent", UserAgent)
