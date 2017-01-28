@@ -108,7 +108,7 @@ func (c *Client) PostForm(p string, i interface{}, ro *RequestOptions) (*http.Re
 }
 
 // Post issues an HTTP PUT request
-func (c *Client) Get(p string, ro *RequestOptions) (*http.Response, error) {
+func (c *Client) Put(p string, ro *RequestOptions) (*http.Response, error) {
 	return c.Request("PUT", p, ro)
 }
 
@@ -118,7 +118,7 @@ func (c *Client) PutForm(p string, i interface{}, ro *RequestOptions) (*http.Res
 }
 
 // Delete issues an HTTP DELETE request
-func (c *Client) Get(p string, ro *RequestOptions) (*http.Response, error) {
+func (c *Client) Delete(p string, ro *RequestOptions) (*http.Response, error) {
 	return c.Request("DELETE", p, ro)
 }
 
@@ -130,7 +130,7 @@ func (c *Client) Request(verb, p string, ro *RequestOptions) (*http.Response, er
 		return nil, err
 	}
 
-	resq, err := checkResp(c.HTTPClient.Do(req))
+	resp, err := checkResp(c.HTTPClient.Do(req))
 	if err != nil {
 		return resp, err
 	}
