@@ -27,7 +27,7 @@ const APIKeyEnvVar = "METOFFICE_API_KEY"
 const DefaultEndpoint = "http://datapoint.metoffice.gov.uk"
 
 // ProjectURL is the url for this library.
-var ProjectURL = "gitlab.com/octete/metoffice-go"
+var ProjectURL = "github.com/octete/go-metoffice"
 
 // ProjectVersion is the version of this library
 var ProjectVersion = "0.1"
