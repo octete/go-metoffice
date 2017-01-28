@@ -180,7 +180,7 @@ func checkResp(resp *http.Response, err error) (*http.Response, error) {
 	}
 }
 
-// decodeJSON is used to decode an HTTP response body into an interface as JSPN
+// decodeJSON is used to decode an HTTP response body into an interface as JSON
 func decodeJSON(out interface{}, body io.ReadCloser) error {
 	defer body.Close()
 
