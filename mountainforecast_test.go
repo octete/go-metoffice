@@ -10,7 +10,7 @@ func TestClient_MountainForecast(t *testing.T) {
 	// Get
 	var ns *MountainForecastList
 	record(t, "mountainforecastlist/get", func(c *Client) {
-		ns, err = c.ListMountainForecasts(&MountainForecastList{})
+		ns, err = c.ListMountainForecasts()
 	})
 	if err != nil {
 		t.Fatal(err)

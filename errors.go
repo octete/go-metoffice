@@ -13,8 +13,8 @@ type HTTPError struct {
 	StatusCode int
 
 	// Message and Detail are information returned by API.
-	Message string `mapstructure:"msg"`
-	Detail  string `mapstructure:"detail"`
+	Message string `json:"msg"`
+	Detail  string `json:"detail"`
 }
 
 // NewHTTPError creates a new HTTP error from the given code.

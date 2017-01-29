@@ -22,21 +22,21 @@ import (
 // MountainForecast has the data for each of the forecast areas that the metoffice
 // provides, with validity data and destination URL.
 type MountainForecastItem struct {
-	DataDate   time.Time `mapstructure:"DataDate"`
-	ValidFrom  time.Time `mapstructure:"ValidFrom"`
-	ValidTo    time.Time `mapstructure:"ValidTo"`
-	CreateDate time.Time `mapstructure:"CreateDate"`
-	URI        string    `mapstructure:"URI"`
-	Area       string    `mapstructure:"Area"`
-	Risk       string    `mapstructure:"Risk"`
+	DataDate   time.Time `json:"DataDate"`
+	ValidFrom  time.Time `json:"ValidFrom"`
+	ValidTo    time.Time `json:"ValidTo"`
+	CreateDate time.Time `json:"CreateDate"`
+	URI        string    `json:"URI"`
+	Area       string    `json:"Area"`
+	Risk       string    `json:"Risk"`
 }
 
 type MountainForecastList struct {
-	MountainForecast []MountainForecastItem `mapstructure:"MountainForecast"`
+	MountainForecast []MountainForecastItem `json:"MountainForecast"`
 }
 
 type MountainForecastListInput struct {
-	MountainForecastList MountainForecastList `mapstructure:"MountainForecastList"`
+	MountainForecastList MountainForecastList `json:"MountainForecastList"`
 }
 
 // ListMountainForecast lists all the mountain areas available from the Metoffice
