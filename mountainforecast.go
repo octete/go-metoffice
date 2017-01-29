@@ -61,3 +61,97 @@ func (c *Client) ListMountainForecasts() ([]MountainForecastItem, error) {
 
 	return mfl.MF, nil
 }
+
+///////////////////////////
+type MountainAreaInput struct {
+	Report Report `json:"report"`
+}
+
+type Report struct {
+	CreatingAuthority string       `json:"creating-authority"`
+	CreationTime      string       `json:"creation-time"`
+	Title             string       `json:"title"`
+	Location          string       `json:"location"`
+	Issue             Issue        `json:"issue"`
+	ValidFrom         time.Time    `json:"ValidFrom"`
+	ValidTo           time.Time    `json:"ValidTo"`
+	Validity          string       `json:"Validity"`
+	IssuedDate        string       `json:"IssuedDate"`
+	Hazards           Hazards      `json:"Hazard"`
+	Overview          string       `json:"Overview"`
+	ForecastDay0      ForecastDay0 `json:"Forecast_Day0"`
+	ForecastDay1      ForecastDay1 `json:"Forecast_day1"`
+	OutlookDay2       string       `json:"Outlook_Day2"`
+	OutlookDay3       string       `json:"Outlook_Day3"`
+	OutlookDay4       string       `json:"Outlook_Day4"`
+}
+
+type Issue struct {
+	Date string `json:"date"`
+	Time string `json:"time"`
+}
+
+type Hazards struct {
+	Hazard []Hazard `json:"Hazard"`
+}
+
+type Hazard struct {
+	No       string `json:"no"`
+	Element  string `json:"Element"`
+	Risk     string `json:"Risk"`
+	Comments string `json:"Comments"`
+}
+
+type ForecastDay0 struct {
+	Weather       string     `json:"Weather"`
+	Visibility    string     `json:"Visibility"`
+	HillFog       string     `json:"HillFog"`
+	MaxWindLevel  string     `json:"MaxWindLevel"`
+	MaxWind       string     `json:"MaxWind"`
+	TempLowLevel  string     `json:"TempLowLevel"`
+	TempHighLevel string     `json:"TempHighLevel"`
+	FreezingLevel string     `json:"FreezingLevel"`
+	WeatherPPN    WeatherPPN `json:"WeatherPPN"`
+}
+
+type WeatherPPN struct {
+	WxPeriod []WxPeriod `json:"WxPeriod"`
+}
+
+type WxPeriod struct {
+	Period      string `json:"period"`
+	PeriodDesc  string `json:"Period"`
+	Weather     int    `json:"Weather"`
+	Probability string `json:"Probability"`
+	PpnType     string `json:"Ppn_type"`
+}
+
+type ForecastDay1 struct {
+	Weather       string `json:"Weather"`
+	Visibility    string `json:"Visibility"`
+	HillFog       string `json:"HillFog"`
+	MaxWindLevel  string `json:"MaxWindLevel"`
+	MaxWind       string `json:"MaxWind"`
+	TempLowLevel  string `json:"TempLowLevel"`
+	TempHighLevel string `json:"TempHighLevel"`
+	FreezingLevel string `json:"FreezingLevel"`
+}
+
+// ListMountainForecast returns all the mountain areas available from the Metoffice
+// in an array.
+func (c *Client) GetMountainAreaForecast(area string) (*MountainAreaInput, error) {
+	// TODO check that area is a string that's valid
+
+	path := fmt.Sprintf("/public/data/txt/wxfcs/mountainarea/%s/%s", "json", area)
+	resp, err := c.Get(path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var b *MountainAreaInput
+	if err := decodeJSON(&b, resp.Body); err != nil {
+		return nil, err
+	}
+
+	return b, nil
+}
