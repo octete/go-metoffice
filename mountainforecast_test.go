@@ -8,7 +8,7 @@ func TestClient_MountainForecast(t *testing.T) {
 	var err error
 
 	// Get
-	var ns *MountainForecastList
+	var ns []MountainForecastItem
 	record(t, "mountainforecastlist/get", func(c *Client) {
 		ns, err = c.ListMountainForecasts()
 	})
