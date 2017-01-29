@@ -16,7 +16,6 @@ import (
 
 	"github.com/ajg/form"
 	cleanhttp "github.com/hashicorp/go-cleanhttp"
-	"github.com/mitchellh/mapstructure"
 )
 
 // APIKeyEnvVar is the name of the environment variable where the Metoffice API
@@ -181,25 +180,15 @@ func checkResp(resp *http.Response, err error) (*http.Response, error) {
 }
 
 // decodeJSON is used to decode an HTTP response body into an interface as JSON
+// TODO Check if this is the right way to do this.
 func decodeJSON(out interface{}, body io.ReadCloser) error {
 	defer body.Close()
 
-	var parsed interface{}
 	dec := json.NewDecoder(body)
-	if err := dec.Decode(&parsed); err != nil {
+	if err := dec.Decode(&out); err != nil {
 		return err
 	}
 
-	decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
-		DecodeHook: mapstructure.ComposeDecodeHookFunc(
-			mapToHTTPHeaderHookFunc(),
-			stringToTimeHookFunc(),
-		),
-		WeaklyTypedInput: true,
-		Result:           out,
-	})
-	if err != nil {
-		return err
-	}
-	return decoder.Decode(parsed)
+	// All good until here?
+	return nil
 }
