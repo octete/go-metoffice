@@ -38,12 +38,12 @@ type MountainForecastList struct {
 	MF []MountainForecastItem `json:"MountainForecast"`
 }
 
-// Mountain ForecastListInput is the input we get from the metoffice
+// MountainForecastListInput is the input we get from the metoffice
 type MountainForecastListInput struct {
 	MFL MountainForecastList `json:"MountainForecastList"`
 }
 
-// ListMountainForecast returns all the mountain areas available from the Metoffice
+// ListMountainForecasts returns all the mountain areas available from the Metoffice
 // in an array.
 func (c *Client) ListMountainForecasts() ([]MountainForecastItem, error) {
 	path := fmt.Sprintf("/public/data/txt/wxfcs/mountainarea/%s/capabilities", "json")
@@ -62,7 +62,7 @@ func (c *Client) ListMountainForecasts() ([]MountainForecastItem, error) {
 	return mfl.MF, nil
 }
 
-///////////////////////////
+// MountainAreaInput is empty
 type MountainAreaInput struct {
 	Report Report `json:"report"`
 }
@@ -137,7 +137,7 @@ type ForecastDay1 struct {
 	FreezingLevel string `json:"FreezingLevel"`
 }
 
-// ListMountainForecast returns all the mountain areas available from the Metoffice
+// GetMountainAreaForecast returns all the mountain areas available from the Metoffice
 // in an array.
 func (c *Client) GetMountainAreaForecast(area string) (*MountainAreaInput, error) {
 	// TODO check that area is a string that's valid
@@ -149,6 +149,44 @@ func (c *Client) GetMountainAreaForecast(area string) (*MountainAreaInput, error
 	}
 
 	var b *MountainAreaInput
+	if err := decodeJSON(&b, resp.Body); err != nil {
+		return nil, err
+	}
+
+	return b, nil
+}
+
+// Location is each of the locations.
+type Location struct {
+	Id   string `json:"@Id"`
+	Name string `json:"@Name"`
+}
+
+// Locations indicates the list of locations
+type Locations struct {
+	Locations []Location `json:"Location"`
+}
+
+// MountainAreaSitelist represents the list of mountain areas
+// in the metoffice.
+type MountainAreaSitelist struct {
+	Locations Locations `json:"Locations"`
+}
+
+// GetMountainAreaSitelist Returns a list of locations the mountain area
+// forecast data feed provides data for .You can use this to find the
+// ID of the site that you are interested in.
+func (c *Client) GetMountainAreaSitelist() (*MountainAreaSitelist, error) {
+
+	// TODO template json as a variable.
+	path := fmt.Sprintf("/public/data/txt/wxfcs/mountainarea/%s/sitelist", "json")
+
+	resp, err := c.Get(path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var b *MountainAreaSitelist
 	if err := decodeJSON(&b, resp.Body); err != nil {
 		return nil, err
 	}
