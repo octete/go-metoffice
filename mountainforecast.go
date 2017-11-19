@@ -20,48 +20,6 @@ import (
 //	} `json:"MountainForecastList"`
 //}
 
-// MountainForecast has the data for each of the forecast areas that the metoffice
-// provides, with validity data and destination URL.
-type MountainForecastItem struct {
-	DataDate   time.Time `json:"DataDate"`
-	ValidFrom  time.Time `json:"ValidFrom"`
-	ValidTo    time.Time `json:"ValidTo"`
-	CreateDate time.Time `json:"CreateDate"`
-	URI        string    `json:"URI"`
-	Area       string    `json:"Area"`
-	Risk       string    `json:"Risk"`
-}
-
-// MountainForecastList is a struct that has a list of mountain
-// areas (MountainForecastItem)
-type MountainForecastList struct {
-	MF []MountainForecastItem `json:"MountainForecast"`
-}
-
-// MountainForecastListInput is the input we get from the metoffice
-type MountainForecastListInput struct {
-	MFL MountainForecastList `json:"MountainForecastList"`
-}
-
-// ListMountainForecasts returns all the mountain areas available from the Metoffice
-// in an array.
-func (c *Client) ListMountainForecasts() ([]MountainForecastItem, error) {
-	path := fmt.Sprintf("/public/data/txt/wxfcs/mountainarea/%s/capabilities", "json")
-	resp, err := c.Get(path, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	var b *MountainForecastListInput
-	if err := decodeJSON(&b, resp.Body); err != nil {
-		return nil, err
-	}
-	var mfl *MountainForecastList
-	mfl = &b.MFL
-
-	return mfl.MF, nil
-}
-
 // MountainAreaInput is empty
 type MountainAreaInput struct {
 	Report Report `json:"report"`
