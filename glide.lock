@@ -1,17 +1,17 @@
 hash: ae3a866c03de36d0e07d2ad778c5dfc3e4b881aeb257b3b536f368ec03e63bdd
-updated: 2017-01-29T01:28:19.693368728Z
+updated: 2017-11-19T16:44:25.261582246Z
 imports:
 - name: github.com/ajg/form
-  version: 523a5da1a92f01b01f840b61689c0340a0243532
+  version: 7ff89c75808766205bfa4411abb436c98c33eb5e
 - name: github.com/hashicorp/go-cleanhttp
   version: ad28ea4487f05916463e2423a55166280e8254b5
 - name: github.com/mitchellh/mapstructure
-  version: db1efb556f84b25a0a13a04aad883943538ad2e0
+  version: 21a35fb16463dfb7c8eee579c65d995d95e64d1e
 testImports:
 - name: github.com/dnaeon/go-vcr
-  version: 1da4f4d884700d1e51c8db934b436535403bf3df
+  version: 87d4990451a858cc210399285be976e63bc3c364
   subpackages:
   - cassette
   - recorder
 - name: gopkg.in/yaml.v2
-  version: 4c78c975fe7c825c6d1466c42be594d1d6f3aba6
+  version: 31c299268d302dd0aa9a0dcf765a3d58971ac83f

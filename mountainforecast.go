@@ -158,7 +158,7 @@ func (c *Client) GetMountainAreaForecast(area string) (*MountainAreaInput, error
 
 // Location is each of the locations.
 type Location struct {
-	Id   string `json:"@Id"`
+	ID   string `json:"@Id"`
 	Name string `json:"@Name"`
 }
 
@@ -176,7 +176,7 @@ type MountainAreaSitelist struct {
 // GetMountainAreaSitelist Returns a list of locations the mountain area
 // forecast data feed provides data for .You can use this to find the
 // ID of the site that you are interested in.
-func (c *Client) GetMountainAreaSitelist() (*MountainAreaSitelist, error) {
+func (c *Client) GetMountainAreaSitelist() (*Locations, error) {
 
 	// TODO template json as a variable.
 	path := fmt.Sprintf("/public/data/txt/wxfcs/mountainarea/%s/sitelist", "json")
@@ -191,5 +191,5 @@ func (c *Client) GetMountainAreaSitelist() (*MountainAreaSitelist, error) {
 		return nil, err
 	}
 
-	return b, nil
+	return &b.Locations, nil
 }

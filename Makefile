@@ -18,7 +18,7 @@ testrace: updatedeps generate
 	@echo "==> Running tests (race)..."
 	@go list $(TEST) \
 		| grep -v "github.com/octete/${NAME}/vendor" \
-		| xargs -n1 go test -timeout=60s -race ${TESTARGS}
+		| xargs -n1 go test -v -timeout=60s -race ${TESTARGS}
 
 # updatedeps installs all the dependencies needed to run and build.
 updatedeps:
