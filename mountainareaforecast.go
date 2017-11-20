@@ -12,13 +12,15 @@ type MountainAreaInput struct {
 
 // Report is the whole data returned by the MetOffice
 type Report struct {
+	ID         int64
+	FetchData  time.Time
 	Location   string     `json:"Location"`
 	Issue      string     `json:"Issue"`
 	Issued     time.Time  `json:"Issued"`
 	Type       string     `json:"Type"`
 	ParamUnits ParamUnits `json:"ParamUnits"`
 	Evening    Evening    `json:"Evening"`
-	Days       DaysInput  `json:"Days"`
+	DaysInput  DaysInput  `json:"Days"`
 }
 
 // DaysInput is
