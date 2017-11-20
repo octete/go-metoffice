@@ -10,3 +10,11 @@ branches:
     - master
 
 script: make bootstrap test testrace
+
+notifications:
+    webhooks:
+        urls:
+            - "https://scalar.vector.im/api/neb/services/hooks/dHJhdmlzLWNpLyU0MGdvbGFuJTNBbm90cmVhbGx5Lm9yZy8lMjFpdnBobXpIQ1BTR0RhdHByT0wlM0Fub3RyZWFsbHkub3Jn"
+        on_success: change  # always|never|change
+        on_failure: always
+        on_start: always
